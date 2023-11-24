@@ -29,7 +29,7 @@ async function index(req, res) {
 
 async function store(req, res) {
     const data = req.body;
-    console.log(data);
+    console.log(data)
     const newPost = await prisma.post.create({
         data: {
             title: data.title,
@@ -37,6 +37,16 @@ async function store(req, res) {
             image: data.image,
             content: data.content,
             published: data.published,
+            category: {
+                create: {
+                    title: data.category,
+                }
+            },
+            tags: {
+                create: {
+                    title: data.tags
+                }
+            }           
         }
     })
 

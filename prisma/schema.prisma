@@ -17,9 +17,9 @@ model Post {
   image      String    @db.VarChar(255)
   content    String    @db.Text
   published  Boolean   @default(false)
-  Category   Category? @relation(fields: [categoryId], references: [id])
+  category   Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
-  Tags       Tag[]
+  tags       Tag[]
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 }
