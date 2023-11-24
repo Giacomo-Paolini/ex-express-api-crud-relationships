@@ -3,27 +3,23 @@ const prisma = new PrismaClient();
 
 async function index(req, res) {
     const filter = {}
-    const { word, online } = req.query
-    if (word !== undefined || online !== undefined) {
+    const { word, published } = req.query
+    if (published) {
+        filter.published = published === 'true'
+    }
+    if (word) {
         filter.title = {
             contains: word
         }
-        filter.published = {
-            equals: online === 'true'  // Confronta il valore di online con la stringa 'true'
-        }
-    } else {
-        return new Error("oops")
     }
     
     const posts = await prisma.post.findMany({
-        where: {
-            published: true,
-            slug: {
-                startsWith: 'tutorial'
-            }
-        },
-    });
-
+        where: filter,
+        include: {
+            category: true,
+            tags: true
+        }
+    })
     return res.json(posts);
 }
 
